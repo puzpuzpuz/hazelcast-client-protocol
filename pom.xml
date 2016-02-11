@@ -31,8 +31,8 @@
     </modules>
 
     <properties>
-        <hazelcast.git.repo>hazelcast</hazelcast.git.repo>
-        <hazelcast.git.branch>maintenance-3.x</hazelcast.git.branch>
+        <hazelcast.git.repo>sancar</hazelcast.git.repo>
+        <hazelcast.git.branch>removeCodeGeneratorModule</hazelcast.git.branch>
         <main.basedir>${project.basedir}</main.basedir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -194,7 +194,7 @@
                         <configuration>
                             <serverId>release-repository</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
                 </plugins>
