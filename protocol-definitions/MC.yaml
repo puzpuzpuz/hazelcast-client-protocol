@@ -17,13 +17,14 @@ methods:
           nullable: false
           since: 2.0
           doc: |
-            The UUID of the member that is supposed to read the metrics from.
+            UUID of the member that is supposed to read the metrics from.
         - name: fromSequence
           type: long
           nullable: false
           since: 2.0
           doc: |
-            The sequence the recorded metrics should be read starting with.
+            The sequence number the recorded metrics should be read
+            starting with.
     response:
       params:
         - name: elements
@@ -31,13 +32,13 @@ methods:
           nullable: false
           since: 2.0
           doc: |
-            The map of timestamp and compressed metrics data
+            The map of timestamp and compressed metrics data.
         - name: nextSequence
           type: long
           nullable: false
           since: 2.0
           doc: |
-            The sequence number that the next task should start with
+            The sequence number that the next task should start with.
   - id: 2
     name: changeClusterState
     since: 2.0
@@ -63,7 +64,7 @@ methods:
     name: getMapConfig
     since: 2.0
     doc: |
-      Gets the config of a map on the member it's called on.
+      Gets the config of a map on the specified member.
     request:
       retryable: true
       partitionIdentifier: -1
@@ -74,6 +75,12 @@ methods:
           since: 2.0
           doc: |
             Name of the map.
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response:
       params:
         - name: inMemoryFormat
@@ -81,7 +88,7 @@ methods:
           nullable: false
           since: 2.0
           doc: |
-            The in memory storage format of the map:
+            In memory storage format of the map:
             0 - Binary
             1 - Object
             2 - Native
@@ -157,7 +164,7 @@ methods:
     name: updateMapConfig
     since: 2.0
     doc: |
-      Updates the config of a map on the member it's called on.
+      Updates the config of a map on the specified member.
     request:
       retryable: false
       partitionIdentifier: -1
@@ -218,15 +225,28 @@ methods:
             7 - USED_NATIVE_MEMORY_PERCENTAGE
             8 - FREE_NATIVE_MEMORY_SIZE
             9 - FREE_NATIVE_MEMORY_PERCENTAGE
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response: {}
   - id: 5
     name: getMemberConfig
     since: 2.0
     doc: |
-      Gets the effective config of a member rendered as XML.
+      Gets the effective config of the specified member rendered as XML.
     request:
       retryable: true
       partitionIdentifier: -1
+      params:
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response:
       params:
         - name: configXml
@@ -234,21 +254,28 @@ methods:
           nullable: false
           since: 2.0
           doc: |
-            Effective config of a member rendered as XML.
+            Effective config of the member rendered as XML.
   - id: 6
     name: runGc
     since: 2.0
     doc: |
-      Requests garbage collection to be performed on the member it's called on.
+      Requests garbage collection to be performed on the specified member.
     request:
       retryable: false
       partitionIdentifier: -1
+      params:
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response: {}
   - id: 7
     name: getThreadDump
     since: 2.0
     doc: |
-      Takes a thread dump of the member it's called on.
+      Takes a thread dump of the specified member.
     request:
       retryable: false
       partitionIdentifier: -1
@@ -259,6 +286,12 @@ methods:
           since: 2.0
           doc: |
             Whether only dead-locked threads or all threads should be dumped.
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response:
       params:
         - name: threadDump
@@ -271,28 +304,49 @@ methods:
     name: shutdownMember
     since: 2.0
     doc: |
-      Shuts down the member it's called on.
+      Shuts down the specified member.
     request:
       retryable: false
       partitionIdentifier: -1
+      params:
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response: {}
   - id: 9
     name: promoteLiteMember
     since: 2.0
     doc: |
-      Promotes the lite member it's called on to a data member.
+      Promotes the specified lite member to a data member.
     request:
       retryable: false
       partitionIdentifier: -1
+      params:
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the lite member.
     response: {}
   - id: 10
     name: getSystemProperties
     since: 2.0
     doc: |
-      Gets the system properties of the member it's called on.
+      Gets the system properties of the specified member.
     request:
       retryable: true
       partitionIdentifier: -1
+      params:
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response:
       params:
         - name: systemProperties
@@ -305,10 +359,17 @@ methods:
     name: getTimedMemberState
     since: 2.0
     doc: |
-      Gets the latest TimedMemberState of the member it's called on.
+      Gets the latest TimedMemberState of the specified member.
     request:
       retryable: true
       partitionIdentifier: -1
+      params:
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response:
       params:
         - name: timedMemberStateJson
@@ -321,7 +382,8 @@ methods:
     name: matchMCConfig
     since: 2.0
     doc: |
-      Checks if local MC config (client filter list) has the same ETag as provided.
+      Checks if local MC config (client filter list)
+      of the specified member has the same ETag as provided.
     request:
       retryable: false
       partitionIdentifier: -1
@@ -332,6 +394,12 @@ methods:
           since: 2.0
           doc: |
             ETag value of current MC config.
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response:
       params:
         - name: result
@@ -344,7 +412,7 @@ methods:
     name: applyMCConfig
     since: 2.0
     doc: |
-      Applies given MC config (client filter list).
+      Applies given MC config (client filter list) to the specified member.
     request:
       retryable: false
       partitionIdentifier: -1
@@ -370,12 +438,18 @@ methods:
           since: 2.0
           doc: |
             Client filter list entries.
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response: {}
   - id: 14
     name: getClusterMetadata
     since: 2.0
     doc: |
-      Gets the current metadata of a cluster.
+      Gets current metadata of the cluster.
     request:
       retryable: true
       partitionIdentifier: -1
@@ -445,7 +519,7 @@ methods:
     name: runScript
     since: 2.0
     doc: |
-      Runs given script on the member it's called on.
+      Runs given script on the specified member.
     request:
       retryable: false
       partitionIdentifier: -1
@@ -462,6 +536,12 @@ methods:
           since: 2.0
           doc: |
             The script to be executed.
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response:
       params:
         - name: result
@@ -474,7 +554,7 @@ methods:
     name: runConsoleCommand
     since: 2.0
     doc: |
-      Runs given console command on the member it's called on.
+      Runs given console command on the specified member.
     request:
       retryable: false
       partitionIdentifier: -1
@@ -491,6 +571,12 @@ methods:
           since: 2.0
           doc: |
             The console command to be executed.
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response:
       params:
         - name: result
@@ -503,7 +589,8 @@ methods:
     name: changeWanReplicationState
     since: 2.0
     doc: |
-      Stop, pause or resume WAN replication for the given WAN replication and publisher
+      Stops, pauses or resumes WAN replication for the given WAN replication
+      and publisher on the specified member.
     request:
       retryable: false
       partitionIdentifier: -1
@@ -529,12 +616,19 @@ methods:
             0 - REPLICATING
             1 - PAUSED
             2 - STOPPED
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response: {}
   - id: 20
     name: clearWanQueues
     since: 2.0
     doc: |
-      Clear WAN replication queues for the given wan replication and publisher
+      Clears WAN replication queues for the given WAN replication
+      and publisher on the specified member.
     request:
       retryable: false
       partitionIdentifier: -1
@@ -551,12 +645,18 @@ methods:
           since: 2.0
           doc: |
             ID of the WAN publisher to clear WAN replication queues of.
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response: {}
   - id: 21
     name: addWanBatchPublisherConfig
     since: 2.0
     doc: |
-      Add a new WAN batch publisher configuration
+      Adds a new WAN batch publisher configuration.
     request:
       retryable: false
       partitionIdentifier: -1
@@ -566,7 +666,7 @@ methods:
           nullable: false
           since: 2.0
           doc: |
-            Name of the WAN replication to add
+            Name of the WAN replication to add.
         - name: targetCluster
           type: String
           nullable: false
@@ -578,25 +678,25 @@ methods:
           nullable: true
           since: 2.0
           doc: |
-            - ID used for identifying the publisher in a WanReplicationConfig
+            - ID used for identifying the publisher in a WanReplicationConfig.
         - name: endpoints
           type: String
           nullable: false
           since: 2.0
           doc: |
-            Comma separated list of target cluster members
+            Comma separated list of target cluster members.
         - name: queueCapacity
           type: int
           nullable: false
           since: 2.0
           doc: |
-            Capacity of the primary and backup queue for WAN replication events
+            Capacity of the primary and backup queue for WAN replication events.
         - name: batchSize
           type: int
           nullable: false
           since: 2.0
           doc: |
-            The maximum batch size that can be sent to target cluster
+            The maximum batch size that can be sent to target cluster.
         - name: batchMaxDelayMillis
           type: int
           nullable: false
@@ -604,7 +704,7 @@ methods:
           doc: |
             The maximum amount of time in milliseconds to wait before sending a batch
              of events to target cluster, if `batch size` of events have not arrived
-             within this duration
+             within this duration.
         - name: responseTimeoutMillis
           type: int
           nullable: false
@@ -612,7 +712,7 @@ methods:
           doc: |
             The duration in milliseconds for the wait time before retrying to
             send the events to target cluster again in case the acknowledgement
-            has not arrived
+            has not arrived.
         - name: ackType
           type: int
           nullable: false
@@ -638,7 +738,7 @@ methods:
           nullable: false
           since: 2.0
           doc: |
-            Returns the IDs for the WAN publishers which were added to the configuration
+            Returns the IDs for the WAN publishers which were added to the configuration.
         - name: ignoredPublisherIds
           type: List_String
           nullable: false
@@ -650,7 +750,7 @@ methods:
     name: wanSyncMap
     since: 2.0
     doc: |
-      Initiate WAN sync for a specific map or all maps
+      Initiates WAN sync for the given map or all maps.
     request:
       retryable: false
       partitionIdentifier: -1
@@ -660,13 +760,13 @@ methods:
           nullable: false
           since: 2.0
           doc: |
-            Name of the WAN replication to initiate WAN sync for
+            Name of the WAN replication to initiate WAN sync for.
         - name: wanPublisherId
           type: String
           nullable: false
           since: 2.0
           doc: |
-            ID of the WAN publisher to initiate WAN sync for
+            ID of the WAN publisher to initiate WAN sync for.
         - name: wanSyncType
           type: int
           nullable: false
@@ -680,7 +780,8 @@ methods:
           nullable: true
           since: 2.0
           doc: |
-            Name of the map to trigger WAN sync on, null if all maps are to be synced
+            Name of the map to trigger WAN sync on, null if all maps
+            are to be synced.
     response:
       params:
         - name: uuid
@@ -693,7 +794,7 @@ methods:
     name: checkWanConsistency
     since: 2.0
     doc: |
-      Initiate WAN consistency check for a specific map
+      Initiates WAN consistency check for the given map.
     request:
       retryable: false
       partitionIdentifier: -1
@@ -703,19 +804,19 @@ methods:
           nullable: false
           since: 2.0
           doc: |
-            Name of the WAN replication to initiate WAN consistency check for
+            Name of the WAN replication to initiate WAN consistency check for.
         - name: wanPublisherId
           type: String
           nullable: false
           since: 2.0
           doc: |
-            ID of the WAN publisher to initiate WAN consistency check for
+            ID of the WAN publisher to initiate WAN consistency check for.
         - name: mapName
           type: String
           nullable: true
           since: 2.0
           doc: |
-            Name of the map to initiate WAN consistency check for
+            Name of the map to initiate WAN consistency check for.
     response:
       params:
         - name: uuid
@@ -724,16 +825,23 @@ methods:
           since: 2.0
           doc: |
             UUID of the consistency check request or null if consistency
-            check is ignored because of the configuration
+            check is ignored because of the configuration.
   - id: 24
     name: pollMCEvents
     since: 2.0
     doc: |
-      Polls events available on member. Once read, events are removed from
-      member's internal queue.
+      Polls events available on the specified member. Once read,
+      events are removed from member's internal queue.
     request:
       retryable: false
       partitionIdentifier: -1
+      params:
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response:
       params:
         - name: events
@@ -757,16 +865,24 @@ methods:
           nullable: false
           since: 2.0
           doc: |
-            List of CP member UUIDs. The mapping is from the UUID of the CP member to UUID of that member on the
-            member list of the cluster service.
+            List of CP member UUIDs. The mapping is from the UUID of
+            the CP member to UUID of that member on the member list
+            of the cluster service.
   - id: 26
     name: promoteToCPMember
     since: 2.0
     doc: |
-      Promotes the local member to the CP role.
+      Promotes the specified member to the CP role.
     request:
       retryable: false
       partitionIdentifier: -1
+      params:
+        - name: memberUuid
+          type: UUID
+          nullable: false
+          since: 2.0.1
+          doc: |
+            UUID of the member.
     response: {}
   - id: 27
     name: removeCPMember
@@ -799,7 +915,7 @@ methods:
     name: triggerPartialStart
     since: 2.0
     doc: |
-      Triggers partial start
+      Triggers partial start of the cluster.
     request:
       retryable: false
       partitionIdentifier: -1
@@ -810,12 +926,13 @@ methods:
           since: 2.0
           nullable: false
           doc: |
-            True if the partial restart was successfully initiated, false otherwise
+            True if the partial restart was successfully initiated,
+            false otherwise.
   - id: 30
     name: triggerForceStart
     since: 2.0
     doc: |
-      Triggers force start
+      Triggers force start of the cluster.
     request:
       retryable: false
       partitionIdentifier: -1
@@ -826,12 +943,13 @@ methods:
           since: 2.0
           nullable: false
           doc: |
-            True if the forced start was successfully initiated, false otherwise
+            True if the forced start was successfully initiated,
+            false otherwise.
   - id: 31
     name: triggerHotRestartBackup
     since: 2.0
     doc: |
-      Triggers hot restart backup
+      Triggers hot restart backup for the cluster.
     request:
       retryable: false
       partitionIdentifier: -1
@@ -840,7 +958,7 @@ methods:
     name: interruptHotRestartBackup
     since: 2.0
     doc: |
-      Interrupts hot restart backup
+      Interrupts hot restart backup for the cluster.
     request:
       retryable: false
       partitionIdentifier: -1
