@@ -137,6 +137,7 @@ export class {{ service_name|capital }}{{ method.name|capital }}Codec {
         clientMessage.addFrame(initialFrame);
         clientMessage.setMessageType(REQUEST_MESSAGE_TYPE);
         clientMessage.setPartitionId(-1);
+        clientMessage.setNumberOfBackupAcks(0);
 
 {% for param in request_var_sized_params %}
         {{ encode_var_sized(param) }};
